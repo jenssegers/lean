@@ -11,9 +11,9 @@ class AppTest extends PHPUnit_Framework_TestCase
 
     public function testLoadsServiceProvider()
     {
-        $container = Mockery::mock('League\Container\Container');
+        $container = Mockery::mock(League\Container\Container::class);
         $container->shouldReceive('delegate')->once();
-        $container->shouldReceive('addServiceProvider')->once()->with(Mockery::type('Jenssegers\Lean\SlimServiceProvider'));
+        $container->shouldReceive('addServiceProvider')->once()->with(Mockery::type(Jenssegers\Lean\SlimServiceProvider::class));
 
         $app = new App($container);
     }

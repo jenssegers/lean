@@ -1,4 +1,6 @@
-<?php namespace Jenssegers\Lean;
+<?php
+
+namespace Jenssegers\Lean;
 
 use League\Container\Container;
 use League\Container\ReflectionContainer;

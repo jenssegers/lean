@@ -1,12 +1,18 @@
-<?php namespace Jenssegers\Lean;
+<?php
 
+namespace Jenssegers\Lean;
+
+use Jenssegers\Lean\Strategies\AutoWiringStrategy;
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\CallableResolver;
 use Slim\Collection;
 use Slim\Handlers\Error;
 use Slim\Handlers\NotAllowed;
 use Slim\Handlers\NotFound;
-use Slim\Handlers\Strategies\RequestResponse;
+use Slim\Handlers\PhpError;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
@@ -25,6 +31,7 @@ class SlimServiceProvider extends AbstractServiceProvider
         'response',
         'router',
         'foundHandler',
+        'phpErrorHandler',
         'errorHandler',
         'notFoundHandler',
         'notAllowedHandler',
@@ -34,60 +41,101 @@ class SlimServiceProvider extends AbstractServiceProvider
     /**
      * @var array
      */
-    private $defaultSettings = [
-        'httpVersion'                       => '1.1',
-        'responseChunkSize'                 => 4096,
-        'outputBuffering'                   => 'append',
-        'determineRouteBeforeAppMiddleware' => false,
-        'displayErrorDetails'               => false,
+    protected $aliases = [
+        Collection::class => 'settings',
+        Request::class => 'request',
+        RequestInterface::class => 'request',
+        ServerRequestInterface::class => 'request',
+        Response::class => 'response',
+        ResponseInterface::class => 'response',
+        Router::class => 'router',
     ];
+
+    /**
+     * @var array
+     */
+    private $defaultSettings = [
+        'httpVersion' => '1.1',
+        'responseChunkSize' => 4096,
+        'outputBuffering' => 'append',
+        'determineRouteBeforeAppMiddleware' => false,
+        'displayErrorDetails' => false,
+    ];
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        // Add alias classes to the provides array.
+        $this->provides = array_merge($this->provides, array_keys($this->aliases));
+    }
 
     /**
      * {@inheritdoc}
      */
     public function register()
     {
-        $this->getContainer()->share('settings', function () {
+        $this->container->share('settings', function () {
             return new Collection($this->defaultSettings);
         });
 
-        $this->getContainer()->share('environment', function () {
+        $this->container->share('environment', function () {
             return new Environment($_SERVER);
         });
 
-        $this->getContainer()->share('request', function () {
-            return Request::createFromEnvironment($this->getContainer()->get('environment'));
+        $this->container->share('request', function () {
+            return Request::createFromEnvironment($this->container->get('environment'));
         });
 
-        $this->getContainer()->share('response', function () {
+        $this->container->share('response', function () {
             $headers = new Headers(['Content-Type' => 'text/html']);
             $response = new Response(200, $headers);
 
-            return $response->withProtocolVersion($this->getContainer()->get('settings')['httpVersion']);
+            return $response->withProtocolVersion($this->container->get('settings')['httpVersion']);
         });
 
-        $this->getContainer()->share('router', function () {
-            return new Router;
+        $this->container->share('router', function () {
+            $routerCacheFile = false;
+            if (isset($this->container->get('settings')['routerCacheFile'])) {
+                $routerCacheFile = $this->container->get('settings')['routerCacheFile'];
+            }
+
+            $router = (new Router)->setCacheFile($routerCacheFile);
+            $router->setContainer($this->container);
+
+            return $router;
         });
 
-        $this->getContainer()->share('foundHandler', function () {
-            return new RequestResponse;
+        $this->container->share('foundHandler', function () {
+            return new AutoWiringStrategy($this->container);
         });
 
-        $this->getContainer()->share('errorHandler', function () {
-            return new Error($this->getContainer()->get('settings')['displayErrorDetails']);
+        $this->container->share('phpErrorHandler', function () {
+            return new PhpError($this->container->get('settings')['displayErrorDetails']);
         });
 
-        $this->getContainer()->share('notFoundHandler', function () {
+        $this->container->share('errorHandler', function () {
+            return new Error($this->container->get('settings')['displayErrorDetails']);
+        });
+
+        $this->container->share('notFoundHandler', function () {
             return new NotFound;
         });
 
-        $this->getContainer()->share('notAllowedHandler', function () {
+        $this->container->share('notAllowedHandler', function () {
             return new NotAllowed;
         });
 
-        $this->getContainer()->share('callableResolver', function () {
-            return new CallableResolver($this->getContainer());
+        $this->container->share('callableResolver', function () {
+            return new CallableResolver($this->container);
         });
+
+        // Register aliases.
+        foreach ($this->aliases as $alias => $definition) {
+            $this->container->share($alias, function () use ($definition) {
+                return $this->container->get($definition);
+            });
+        }
     }
 }
