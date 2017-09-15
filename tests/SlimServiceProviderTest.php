@@ -2,9 +2,20 @@
 
 use Jenssegers\Lean\SlimServiceProvider;
 use League\Container\Container;
+use Slim\Interfaces\InvocationStrategyInterface;
 
 class SlimServiceProviderTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Container
+     */
+    private $container;
+
+    /**
+     * @var SlimServiceProvider
+     */
+    private $provider;
+
     public function setUp()
     {
         $this->container = new Container;
@@ -54,8 +65,10 @@ class SlimServiceProviderTest extends PHPUnit_Framework_TestCase
     public function testHasFoundHandler()
     {
         $this->assertTrue($this->container->has('foundHandler'));
-        $this->assertInstanceOf(Jenssegers\Lean\Strategies\AutoWiringStrategy::class,
-            $this->container->get('foundHandler'));
+        $this->assertInstanceOf(
+            InvocationStrategyInterface::class,
+            $this->container->get('foundHandler')
+        );
     }
 
     public function testHasPhpErrorHandler()

@@ -42,7 +42,6 @@ class SlimServiceProvider extends AbstractServiceProvider
      * @var array
      */
     protected $aliases = [
-        Collection::class => 'settings',
         Request::class => 'request',
         RequestInterface::class => 'request',
         ServerRequestInterface::class => 'request',
@@ -60,6 +59,8 @@ class SlimServiceProvider extends AbstractServiceProvider
         'outputBuffering' => 'append',
         'determineRouteBeforeAppMiddleware' => false,
         'displayErrorDetails' => false,
+        'addContentLengthHeader' => true,
+        'routerCacheFile' => false,
     ];
 
     /**
@@ -89,7 +90,7 @@ class SlimServiceProvider extends AbstractServiceProvider
         });
 
         $this->container->share('response', function () {
-            $headers = new Headers(['Content-Type' => 'text/html']);
+            $headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
             $response = new Response(200, $headers);
 
             return $response->withProtocolVersion($this->container->get('settings')['httpVersion']);
@@ -102,7 +103,9 @@ class SlimServiceProvider extends AbstractServiceProvider
             }
 
             $router = (new Router)->setCacheFile($routerCacheFile);
-            $router->setContainer($this->container);
+            if (method_exists($router, 'setContainer')) {
+                $router->setContainer($this->container);
+            }
 
             return $router;
         });

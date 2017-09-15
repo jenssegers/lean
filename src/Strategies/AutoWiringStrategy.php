@@ -2,7 +2,7 @@
 
 namespace Jenssegers\Lean\Strategies;
 
-use League\Container\Container;
+use League\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Interfaces\InvocationStrategyInterface;
@@ -10,16 +10,16 @@ use Slim\Interfaces\InvocationStrategyInterface;
 class AutoWiringStrategy implements InvocationStrategyInterface
 {
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
      * AutoWiring constructor.
      *
-     * @param Container $container
+     * @param ContainerInterface $container
      */
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
@@ -28,10 +28,10 @@ class AutoWiringStrategy implements InvocationStrategyInterface
      * Invoke a route callable with request, response and all route parameters
      * as individual arguments.
      *
-     * @param array|callable         $callable
+     * @param array|callable $callable
      * @param ServerRequestInterface $request
-     * @param ResponseInterface      $response
-     * @param array                  $routeArguments
+     * @param ResponseInterface $response
+     * @param array $routeArguments
      *
      * @return mixed
      */
