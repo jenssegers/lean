@@ -26,7 +26,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Jenssegers\\Lean\\": "src"
+            "Jenssegers\\Lean\\": "src/Lean",
+            "Slim\\": "src/Slim"
         }
     },
     "scripts": {

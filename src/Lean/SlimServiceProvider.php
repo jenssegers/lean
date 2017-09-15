@@ -8,7 +8,6 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\CallableResolver;
-use Slim\Collection;
 use Slim\Handlers\Error;
 use Slim\Handlers\NotAllowed;
 use Slim\Handlers\NotFound;
@@ -18,6 +17,7 @@ use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Router;
+use Slim\Settings;
 
 class SlimServiceProvider extends AbstractServiceProvider
 {
@@ -42,6 +42,7 @@ class SlimServiceProvider extends AbstractServiceProvider
      * @var array
      */
     protected $aliases = [
+        Settings::class => 'settings',
         Request::class => 'request',
         RequestInterface::class => 'request',
         ServerRequestInterface::class => 'request',
@@ -78,7 +79,7 @@ class SlimServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $this->container->share('settings', function () {
-            return new Collection($this->defaultSettings);
+            return new Settings($this->defaultSettings);
         });
 
         $this->container->share('environment', function () {
