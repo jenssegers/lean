@@ -4,15 +4,11 @@ php:
   - 5.5
   - 5.6
   - 7.0
-  - hhvm
+  - 7.1
 
 # This triggers builds to run on the new TravisCI infrastructure.
 # See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 sudo: false
-
-matrix:
-  allow_failures:
-    - php: 7.0
 
 before_script:
   - travis_retry composer self-update
@@ -23,4 +19,4 @@ script:
   - phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
-  - if [[ $TRAVIS_PHP_VERSION != 'hhvm' && $TRAVIS_PHP_VERSION != '7.0' ]]; then php vendor/bin/coveralls -v; fi;'
+  - php vendor/bin/coveralls -v
