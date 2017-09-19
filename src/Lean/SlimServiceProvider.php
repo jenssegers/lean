@@ -64,9 +64,6 @@ class SlimServiceProvider extends AbstractServiceProvider
         'routerCacheFile' => false,
     ];
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         // Add alias classes to the provides array.
@@ -74,7 +71,7 @@ class SlimServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function register()
     {

@@ -15,8 +15,6 @@ class AutoWiringStrategy implements InvocationStrategyInterface
     protected $container;
 
     /**
-     * AutoWiring constructor.
-     *
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
