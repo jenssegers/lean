@@ -22,8 +22,8 @@ require 'vendor/autoload.php';
 
 $app = new Jenssegers\Lean\App();
 
-$app->get('/hello/{name}', function ($request, $response, $args) {
-    return $response->write('Hello, ' . $args['name']);
+$app->get('/hello/{name}', function (Request $request, Response $response, $name) {
+    return $response->write('Hello, ' . $name);
 });
 
 $app->run();
@@ -41,16 +41,12 @@ $container->addServiceProvider(new Jenssegers\Lean\SlimServiceProvider);
 
 $app = new Slim\App($container);
 
-$app->get('/hello/{name}', function ($request, $response, $args) {
-    return $response->write('Hello, ' . $args['name']);
+$app->get('/hello/{name}', function (Request $request, Response $response, $name) {
+    return $response->write('Hello, ' . $name);
 });
 
 $app->run();
 ```
-
-## Change log
-
-Please see [CHANGELOG](../../releases) for more information what has changed recently.
 
 ## Testing
 
