@@ -54,7 +54,7 @@ class SlimServiceProvider extends AbstractServiceProvider
     /**
      * @var array
      */
-    private $defaultSettings = [
+    protected $defaultSettings = [
         'httpVersion' => '1.1',
         'responseChunkSize' => 4096,
         'outputBuffering' => 'append',
