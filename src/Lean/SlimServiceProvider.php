@@ -16,6 +16,7 @@ use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Interfaces\RouterInterface;
 use Slim\Router;
 use Slim\Settings;
 
@@ -49,6 +50,7 @@ class SlimServiceProvider extends AbstractServiceProvider
         Response::class => 'response',
         ResponseInterface::class => 'response',
         Router::class => 'router',
+        RouterInterface::class => 'router',
     ];
 
     /**
