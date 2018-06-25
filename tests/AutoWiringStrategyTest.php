@@ -9,7 +9,7 @@ class AutoWiringStrategyTest extends PHPUnit_Framework_TestCase
 {
     public function testCallableAutoWiring()
     {
-        $container = new Container;
+        $container = new Container();
         $strategy = new AutoWiringStrategy($container);
 
         $yesterday = new DateTime('yesterday');

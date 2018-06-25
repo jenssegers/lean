@@ -2,7 +2,6 @@
 
 namespace Jenssegers\Lean;
 
-use Jenssegers\Lean\Strategies\AutoWiringStrategy;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -12,6 +11,7 @@ use Slim\Handlers\Error;
 use Slim\Handlers\NotAllowed;
 use Slim\Handlers\NotFound;
 use Slim\Handlers\PhpError;
+use Slim\Handlers\Strategies\RequestResponse;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
@@ -102,7 +102,7 @@ class SlimServiceProvider extends AbstractServiceProvider
                 $routerCacheFile = $this->container->get('settings')['routerCacheFile'];
             }
 
-            $router = (new Router)->setCacheFile($routerCacheFile);
+            $router = (new Router())->setCacheFile($routerCacheFile);
             if (method_exists($router, 'setContainer')) {
                 $router->setContainer($this->container);
             }
@@ -111,7 +111,7 @@ class SlimServiceProvider extends AbstractServiceProvider
         });
 
         $this->container->share('foundHandler', function () {
-            return new AutoWiringStrategy($this->container);
+            return new RequestResponse();
         });
 
         $this->container->share('phpErrorHandler', function () {
@@ -123,11 +123,11 @@ class SlimServiceProvider extends AbstractServiceProvider
         });
 
         $this->container->share('notFoundHandler', function () {
-            return new NotFound;
+            return new NotFound();
         });
 
         $this->container->share('notAllowedHandler', function () {
-            return new NotAllowed;
+            return new NotAllowed();
         });
 
         $this->container->share('callableResolver', function () {

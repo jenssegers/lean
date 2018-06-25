@@ -14,9 +14,9 @@ class App extends Slim
      */
     public function __construct(ContainerInterface $container = null)
     {
-        $container = $container ?: new Container;
-        $container->delegate(new ReflectionContainer);
-        $container->addServiceProvider(new SlimServiceProvider);
+        $container = $container ?: new Container();
+        $container->delegate(new ReflectionContainer());
+        $container->addServiceProvider(new SlimServiceProvider());
 
         parent::__construct($container);
     }

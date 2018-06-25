@@ -18,8 +18,8 @@ class SlimServiceProviderTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->container = new Container;
-        $this->provider = new SlimServiceProvider;
+        $this->container = new Container();
+        $this->provider = new SlimServiceProvider();
         $this->container->addServiceProvider($this->provider);
     }
 
