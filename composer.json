@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php" : ">=5.5",
+        "php" : ">=5.6",
         "slim/slim": "^3.0",
         "league/container": "^2.0|^3.0"
     },
