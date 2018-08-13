@@ -1,20 +1,22 @@
 <?php
 
 use Jenssegers\Lean\App;
+use League\Container\Container;
+use PHPUnit\Framework\TestCase;
 
-class AppTest extends PHPUnit_Framework_TestCase
+class AppTest extends TestCase
 {
-    public function tearDown()
+    public function testItLoadsTheSlimServiceProviderOnAnInjected()
     {
-        Mockery::close();
+        $container = new Container();
+        $app = new App($container);
+        $this->assertTrue($container->has('request'));
     }
 
-    public function testLoadsServiceProvider()
+    public function testItConstructsWithoutAContainer()
     {
-        $container = Mockery::mock(League\Container\Container::class);
-        $container->shouldReceive('delegate')->once();
-        $container->shouldReceive('addServiceProvider')->once()->with(Mockery::type(Jenssegers\Lean\SlimServiceProvider::class));
-
-        $app = new App($container);
+        $app = new App();
+        $container = $app->getContainer();
+        $this->assertTrue($container->has('request'));
     }
 }

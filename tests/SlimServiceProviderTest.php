@@ -2,9 +2,10 @@
 
 use Jenssegers\Lean\SlimServiceProvider;
 use League\Container\Container;
+use PHPUnit\Framework\TestCase;
 use Slim\Interfaces\InvocationStrategyInterface;
 
-class SlimServiceProviderTest extends PHPUnit_Framework_TestCase
+class SlimServiceProviderTest extends TestCase
 {
     /**
      * @var Container
