@@ -28,8 +28,5 @@
             "Jenssegers\\Lean\\": "src/Lean",
             "Slim\\": "src/Slim"
         }
-    },
-    "scripts": {
-        "test": "phpunit"
     }
 }

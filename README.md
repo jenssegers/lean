@@ -41,8 +41,8 @@ $container->addServiceProvider(new Jenssegers\Lean\SlimServiceProvider);
 
 $app = new Slim\App($container);
 
-$app->get('/hello/{name}', function (Request $request, Response $response, $name) {
-    return $response->write('Hello, ' . $name);
+$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
+    return $response->write('Hello, ' . $args['name']);
 });
 
 $app->run();
@@ -51,7 +51,7 @@ $app->run();
 ## Testing
 
 ``` bash
-$ composer test
+$ php ./vendor/bin/phpunit
 ```
 
 ## License
