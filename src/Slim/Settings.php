@@ -15,9 +15,9 @@ class Settings extends Collection
 
         $array = $this->data;
 
-        foreach (explode('.', $key) as $key) {
-            if (isset($array[$key])) {
-                $array = $array[$key];
+        foreach (explode('.', $key) as $sub) {
+            if (isset($array[$sub])) {
+                $array = $array[$sub];
             } else {
                 return $default;
             }
