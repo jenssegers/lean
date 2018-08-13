@@ -13,10 +13,10 @@ sudo: false
 before_script:
   - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+  - mkdir -p build/logs
 
 script:
-  - mkdir -p build/logs
-  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_success:
-  - sh -c 'php vendor/bin/php-coveralls -v'
+  - php vendor/bin/php-coveralls -v
