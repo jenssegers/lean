@@ -22,8 +22,8 @@ require 'vendor/autoload.php';
 
 $app = new Jenssegers\Lean\App();
 
-$app->get('/hello/{name}', function (Request $request, Response $response, $name) {
-    return $response->write('Hello, ' . $name);
+$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
+    return $response->write('Hello, ' . $args['name']);
 });
 
 $app->run();
