@@ -45,4 +45,31 @@ class SettingsTest extends TestCase
         $this->assertTrue($settings->has('foo.bar'));
         $this->assertFalse($settings->has('bar'));
     }
+
+    public function testSetWithIncompatibleTypes()
+    {
+        $settings = new Settings([
+            'foo' => 'bar',
+        ]);
+
+        $this->expectException(RuntimeException::class);
+        $settings->set('foo.bar', 'baz');
+    }
+
+    public function testRemoveDotNotation()
+    {
+        $settings = new Settings([
+            'foo' => [
+                'bar' => 'baz',
+                'c' => 'd',
+            ],
+            'a' => 'b'
+        ]);
+
+        $settings->remove('foo.bar');
+        $this->assertEquals(['c' => 'd'], $settings->get('foo'));
+
+        $settings->remove('foo');
+        $this->assertEquals(['a' => 'b'], $settings->all());
+    }
 }
