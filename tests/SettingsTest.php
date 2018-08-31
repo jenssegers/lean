@@ -15,6 +15,7 @@ class SettingsTest extends TestCase
 
         $this->assertEquals('baz', $settings->get('foo.bar'));
         $this->assertEquals(null, $settings->get('bar'));
+        $this->assertEquals(['bar' => 'baz'], $settings->get('foo'));
     }
 
     public function testSetDotNotation()
@@ -23,6 +24,7 @@ class SettingsTest extends TestCase
         $settings->set('foo.bar', 'baz');
 
         $this->assertEquals('baz', $settings->get('foo.bar'));
+        $this->assertEquals(['bar' => 'baz'], $settings->get('foo'));
     }
 
     public function testGetWithDefaultValue()

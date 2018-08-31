@@ -9,10 +9,6 @@ class Settings extends Collection
      */
     public function get($key, $default = null)
     {
-        if (array_key_exists($key, $this->data)) {
-            return $this->data[$key];
-        }
-
         $array = $this->data;
 
         foreach (explode('.', $key) as $sub) {
