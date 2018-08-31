@@ -10,15 +10,15 @@ class Settings extends Collection
     {
         $array = $this->data;
 
-        foreach (explode('.', $key) as $sub) {
-            if (!isset($array[$sub])) {
+        foreach (explode('.', $key) as $segment) {
+            if (!isset($array[$segment])) {
                 return $default;
             }
             if (!is_array($array)) {
                 return $default;
             }
 
-            $array = $array[$sub];
+            $array = $array[$segment];
         }
 
         return $array;
@@ -30,15 +30,15 @@ class Settings extends Collection
         $keyPath = explode('.', $key);
         $endKey = array_pop($keyPath);
 
-        foreach ($keyPath as $sub) {
-            if (!isset($array[$sub])) {
-                $array[$sub] = [];
+        foreach ($keyPath as $segment) {
+            if (!isset($array[$segment])) {
+                $array[$segment] = [];
             }
-            if (!is_array($array[$sub])) {
-                throw new RuntimeException("The value at $sub of $key is not an array");
+            if (!is_array($array[$segment])) {
+                throw new RuntimeException("The value at $segment of $key is not an array");
             }
 
-            $array = &$array[$sub];
+            $array = &$array[$segment];
         }
 
         $array[$endKey] = $value;
@@ -46,15 +46,11 @@ class Settings extends Collection
 
     public function has($key)
     {
-        if (array_key_exists($key, $this->data)) {
-            return true;
-        }
-
-        $subKeyArray = $this->data;
+        $array = $this->data;
 
         foreach (explode('.', $key) as $segment) {
-            if (array_key_exists($segment, $subKeyArray)) {
-                $subKeyArray = $subKeyArray[$segment];
+            if (array_key_exists($segment, $array)) {
+                $array = $array[$segment];
             } else {
                 return false;
             }
@@ -69,12 +65,12 @@ class Settings extends Collection
         $keyPath = explode('.', $key);
         $endKey = array_pop($keyPath);
 
-        foreach ($keyPath as $sub) {
-            if (!isset($array[$sub])) {
+        foreach ($keyPath as $segment) {
+            if (!isset($array[$segment])) {
                 return;
             }
 
-            $array = &$array[$sub];
+            $array = &$array[$segment];
         }
 
         unset($array[$endKey]);
