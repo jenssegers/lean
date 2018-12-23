@@ -11,7 +11,6 @@ use Slim\Handlers\Error;
 use Slim\Handlers\NotAllowed;
 use Slim\Handlers\NotFound;
 use Slim\Handlers\PhpError;
-use Slim\Handlers\Strategies\RequestResponse;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
@@ -108,7 +107,7 @@ class SlimServiceProvider extends AbstractServiceProvider
         });
 
         $this->container->share('foundHandler', function () {
-            return new RequestResponse();
+            return new MethodInjection($this->container);
         });
 
         $this->container->share('phpErrorHandler', function () {
