@@ -2,27 +2,22 @@
 
 namespace Jenssegers\Lean\Tests;
 
+use Jenssegers\Lean\SlimDefinitionAggregateBuilder;
 use Jenssegers\Lean\SlimServiceProvider;
 use League\Container\Container;
 use PHPUnit\Framework\TestCase;
 
-class SlimServiceProviderTest extends TestCase
+class SlimDefinitionAggregateBuilderTest extends TestCase
 {
     /**
      * @var Container
      */
     private $container;
 
-    /**
-     * @var SlimServiceProvider
-     */
-    private $provider;
-
     public function setUp()
     {
         $this->container = new Container();
-        $this->provider = new SlimServiceProvider();
-        $this->container->addServiceProvider($this->provider);
+        $this->container->delegate(new Container(SlimDefinitionAggregateBuilder::build($this->container)));
     }
 
     public function provideRequiredServices()
