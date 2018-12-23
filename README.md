@@ -29,7 +29,7 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
 $app->run();
 ```
 
-Behind the scenes a Slim application is bootstrapped using a `SlimServiceProvider` which adds all of the required Slim components to League's container.
+Behind the scenes a Slim application is bootstrapped by adding all of the required Slim components to League's container.
 
 ## Service Providers
 
