@@ -1,6 +1,9 @@
 <?php
 
+namespace Jenssegers\Lean\Tests;
+
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Slim\Settings;
 
 class SettingsTest extends TestCase
@@ -63,7 +66,7 @@ class SettingsTest extends TestCase
                 'bar' => 'baz',
                 'c' => 'd',
             ],
-            'a' => 'b'
+            'a' => 'b',
         ]);
 
         $settings->remove('foo.bar');
