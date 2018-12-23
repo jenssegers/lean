@@ -72,9 +72,6 @@ class SlimServiceProvider extends AbstractServiceProvider
         $this->provides = array_merge($this->provides, array_keys($this->aliases));
     }
 
-    /**
-     * @inheritdoc
-     */
     public function register()
     {
         $this->container->share('settings', function () {

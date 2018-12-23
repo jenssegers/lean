@@ -44,7 +44,7 @@ class Settings extends Collection
         $array[$endKey] = $value;
     }
 
-    public function has($key)
+    public function has($key): bool
     {
         $array = $this->data;
 

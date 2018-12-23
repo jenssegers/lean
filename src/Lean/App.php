@@ -8,9 +8,6 @@ use Slim\App as Slim;
 
 class App extends Slim
 {
-    /**
-     * @inheritdoc
-     */
     public function __construct(Container $container = null)
     {
         $container = $container ?: new Container();
@@ -20,10 +17,7 @@ class App extends Slim
         parent::__construct($container);
     }
 
-    /**
-     * @return Container
-     */
-    public function getContainer()
+    public function getContainer(): Container
     {
         return parent::getContainer();
     }
