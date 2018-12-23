@@ -15,7 +15,7 @@ $ composer require jenssegers/lean
 
 ## Usage
 
-There are 2 ways you can start using Lean. The easiest way is to use the included `App` which extends the original Slim 3 `App` and injects the custom container:
+The easiest way to start using Lean is simply creating a `Jenssegers\Lean\App` instance:
 
 ``` php
 require 'vendor/autoload.php';
@@ -29,7 +29,7 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
 $app->run();
 ```
 
-Behind the scenes the container is prepared using a `SlimServiceProvider` which bootstraps all of the required Slim components.
+Behind the scenes a Slim application is bootstrapped using a `SlimServiceProvider` which adds all of the required Slim components to League's container.
 
 ## Service Providers
 
@@ -48,14 +48,9 @@ class SomeServiceProvider extends AbstractServiceProvider
      * provider. Every service that is registered via
      * this service provider must have an alias added
      * to this array or it will be ignored.
-     *
-     * @var array
      */
     protected $provides = [
-        'key',
-        'Some\Controller',
-        'Some\Model',
-        'Some\Request'
+        SomeInterface::class,
     ];
 
     /**
@@ -66,13 +61,8 @@ class SomeServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
-        $this->getContainer()->add('key', 'value');
-
         $this->getContainer()
-            ->add('Some\Controller')
-            ->addArgument('Some\Request')
-            ->addArgument('Some\Model')
-        ;
+            ->add(SomeInterface::class, SomeImplementation::class);
     }
 }
 ```
