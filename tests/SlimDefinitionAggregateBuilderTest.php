@@ -3,7 +3,6 @@
 namespace Jenssegers\Lean\Tests;
 
 use Jenssegers\Lean\SlimDefinitionAggregateBuilder;
-use Jenssegers\Lean\SlimServiceProvider;
 use League\Container\Container;
 use PHPUnit\Framework\TestCase;
 
