@@ -76,6 +76,26 @@ $app->getContainer()->addServiceProvider(\Acme\ServiceProvider\SomeServiceProvid
 
 Read more about service providers [here](https://container.thephpleague.com/3.x/service-providers/).
 
+## Settings
+
+You can access Slim's internal configuration through the `settings` key on the container:
+
+```php
+$app = new \Jenssegers\Lean\App();
+
+$app->getContainer()->get('settings')['displayErrorDetails'] = true;
+```
+
+Alternatively, an alias is registered that allows a bit more fluent way of working with settings:
+
+```php
+$app = new \Jenssegers\Lean\App();
+
+$app->getContainer()->get(\Slim\Settings::class)->set('displayErrorDetails', true);
+``` 
+
+Read more about the available configuration options [here](https://www.slimframework.com/docs/v3/objects/application.html#slim-default-settings).
+
 ## Error Handlers
 
 By default, Lean uses Slim's error handlers. There are different ways to implement an error handler for Slim, read more about them [here](https://www.slimframework.com/docs/v3/handlers/error.html).
