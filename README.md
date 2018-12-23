@@ -78,7 +78,23 @@ Read more about service providers [here](https://container.thephpleague.com/3.x/
 
 ## Error Handlers
 
-By default, Lean uses Slim's error handlers. If you want to overwrite error handler you can do that by simply adding your own error handler on the container like this:
+By default, Lean uses Slim's error handlers. There are different ways to implement an error handler for Slim, read more about them [here](https://www.slimframework.com/docs/v3/handlers/error.html).
+
+Typically you would create a custom error handler class that looks like this:
+
+```php
+class CustomErrorHandler
+{
+    public function __invoke(ServerRequestInterface $request, Response $response, Throwable $exception)
+    {
+        return $response->withJson([
+            'error' => 'Something went wrong',
+        ], 500);
+    }
+}
+```
+
+Then you overwrite the default handler by adding it to the container:
 
 ```php
 $app = new Jenssegers\Lean\App();
