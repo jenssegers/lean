@@ -24,7 +24,7 @@ class AppTest extends TestCase
         $this->assertTrue($container->has('request'));
     }
 
-    public function testItAllowsOverwritingRegisteredServices()
+    public function testItSupportsOverwritingDefaultDefinitions()
     {
         $app = new App();
         $container = $app->getContainer();
@@ -35,9 +35,10 @@ class AppTest extends TestCase
         });
 
         $this->assertInstanceOf(ErrorHandler::class, $app->getContainer()->get('errorHandler'));
+        $this->assertTrue($app->getContainer()->has('request'));
     }
 
-    public function testItDoesntOverwriteAlreadyRegisteredService()
+    public function testItDoesntOverwriteAlreadyRegisteredDefinitions()
     {
         $container = new Container();
         $this->assertFalse($container->has('errorHandler'));
@@ -48,14 +49,25 @@ class AppTest extends TestCase
 
         $app = new App($container);
         $this->assertInstanceOf(ErrorHandler::class, $app->getContainer()->get('errorHandler'));
+        $this->assertTrue($app->getContainer()->has('request'));
     }
 
-    public function testItAllowsServiceProvidersToOverwriteSlimServices()
+    public function testItSupportsPreInjectedServiceProviders()
     {
         $container = new Container();
         $container->addServiceProvider(ErrorServiceProvider::class);
         $app = new App($container);
 
         $this->assertInstanceOf(ErrorHandler::class, $app->getContainer()->get('errorHandler'));
+        $this->assertTrue($app->getContainer()->has('request'));
+    }
+
+    public function testItSupportsPostInjectedServiceProviders()
+    {
+        $app = new App();
+        $app->getContainer()->addServiceProvider(ErrorServiceProvider::class);
+
+        $this->assertInstanceOf(ErrorHandler::class, $app->getContainer()->get('errorHandler'));
+        $this->assertTrue($app->getContainer()->has('request'));
     }
 }

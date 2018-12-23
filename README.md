@@ -98,25 +98,7 @@ $app->getContainer()->share('errorHandler', function () {
 });
 ```
 
-## Usage with the original Slim application
-
-If you prefer to use the original Slim application, you can bootstrap the entire process manually like this:
-
-``` php
-require 'vendor/autoload.php';
-
-$container = new \League\Container\Container();
-$container->delegate(new \League\Container\ReflectionContainer());
-$container->addServiceProvider(new \Jenssegers\Lean\SlimServiceProvider());
-
-$app = new \Slim\App($container);
-
-$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
-    return $response->write('Hello, ' . $args['name']);
-});
-
-$app->run();
-```
+Ideally you would put this code inside a service provider. Read more about service providers above.
 
 ## Testing
 
