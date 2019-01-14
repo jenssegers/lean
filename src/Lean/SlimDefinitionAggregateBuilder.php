@@ -13,6 +13,7 @@ use Slim\Handlers\Error;
 use Slim\Handlers\NotAllowed;
 use Slim\Handlers\NotFound;
 use Slim\Handlers\PhpError;
+use Slim\Handlers\Strategies\RequestResponse;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
@@ -48,6 +49,7 @@ class SlimDefinitionAggregateBuilder
         'displayErrorDetails' => false,
         'addContentLengthHeader' => true,
         'routerCacheFile' => false,
+        'methodInjection' => false,
     ];
 
     public static function build(ContainerInterface $container): DefinitionAggregateInterface
@@ -89,7 +91,11 @@ class SlimDefinitionAggregateBuilder
         }, true);
 
         $aggregate->add('foundHandler', function () use ($container) {
-            return new MethodInjection($container);
+            if ($container->get('settings')['methodInjection']) {
+                return new MethodInjection($container);
+            }
+
+            return new RequestResponse();
         }, true);
 
         $aggregate->add('phpErrorHandler', function () use ($container) {

@@ -29,7 +29,7 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
 $app->run();
 ```
 
-Behind the scenes a Slim application is bootstrapped by adding all of the required Slim components to League's container.
+Behind the scenes, a Slim application is bootstrapped by adding all of the required Slim components to League's container.
 
 ## Service Providers
 
@@ -96,6 +96,34 @@ $app->getContainer()->get(\Slim\Settings::class)->set('displayErrorDetails', tru
 
 Read more about the available configuration options [here](https://www.slimframework.com/docs/v3/objects/application.html#slim-default-settings).
 
+# Routes
+
+By default, Lean will pass the `Request`, `Response` and route parameters to your routes. Alternatively, you can access the route parameters through the `getAttribute` method of the request.
+
+```php
+$app->get('/books/{id}', function (Request $request, Response $response, array $args) {
+    $id = $args['id'];
+    // Or
+    $id = $request->getAttribute('id');
+});
+```
+
+Read more about routes [here](http://www.slimframework.com/docs/v3/objects/router.html).
+
+# Method Injection
+
+Method injection allows you to define dependencies on a method level, rather than in the constructor (similar to the Laravel framework). If you want to enable method injection you can enable setting the `methodInjection` setting:
+
+```php
+$app->getContainer()->get(\Slim\Settings::class)->set('methodInjection', true);
+
+$app->get('/books/{id}', function (Request $request, string $id) {
+    // ...
+});
+```
+
+Route attributes are only available as method parameters and will not be accessible through the `getAttribute` method on the request object.
+
 ## Error Handlers
 
 By default, Lean uses Slim's error handlers. There are different ways to implement an error handler for Slim, read more about them [here](https://www.slimframework.com/docs/v3/handlers/error.html).
@@ -124,7 +152,7 @@ $app->getContainer()->share('errorHandler', function () {
 });
 ```
 
-Ideally you would put this code inside a service provider. Read more about service providers above.
+Ideally, you would put this code inside a service provider. Read more about service providers above.
 
 ## Testing
 
