@@ -120,7 +120,7 @@ $app->get('/books/{id}', function (Request $request, Response $response) {
 If you want to disable this behaviour and use the default Slim way of route arguments, you can disable this feature be setting `methodInjection` to `false`:
 
 ```php
-$app->getContainer()->get(\Slim\Settings::class)->set('methodInjection', true);
+$app->getContainer()->get(\Slim\Settings::class)->set('methodInjection', false);
 ```
 
 Read more about routes [here](http://www.slimframework.com/docs/v3/objects/router.html).
