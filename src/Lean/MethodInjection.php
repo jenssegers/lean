@@ -31,6 +31,9 @@ class MethodInjection implements InvocationStrategyInterface
             $request = $request->withAttribute($k, $v);
         }
 
+        // Re-assign the request to the container with the route modifications.
+        $this->reflectionContainer->getContainer()->share('request', $request);
+
         return $this->reflectionContainer->call($callable, $routeArguments);
     }
 }

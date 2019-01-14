@@ -49,7 +49,7 @@ class SlimDefinitionAggregateBuilder
         'displayErrorDetails' => false,
         'addContentLengthHeader' => true,
         'routerCacheFile' => false,
-        'methodInjection' => false,
+        'methodInjection' => true,
     ];
 
     public static function build(ContainerInterface $container): DefinitionAggregateInterface

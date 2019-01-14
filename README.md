@@ -22,8 +22,8 @@ require 'vendor/autoload.php';
 
 $app = new \Jenssegers\Lean\App();
 
-$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
-    return $response->write('Hello, ' . $args['name']);
+$app->get('/hello/{name}', function (Request $request, Response $response, string $name) {
+    return $response->write('Hello, ' . $name);
 });
 
 $app->run();
@@ -96,33 +96,34 @@ $app->getContainer()->get(\Slim\Settings::class)->set('displayErrorDetails', tru
 
 Read more about the available configuration options [here](https://www.slimframework.com/docs/v3/objects/application.html#slim-default-settings).
 
-# Routes
+# Route arguments
 
-By default, Lean will pass the `Request`, `Response` and route parameters to your routes. Alternatively, you can access the route parameters through the `getAttribute` method of the request.
+By default, Lean will use method injection to pass arguments to your routes. This allows you to type-hint dependencies on method level (similar to the Laravel framework).
+
+Route arguments will be passed as individual arguments to your method:
 
 ```php
-$app->get('/books/{id}', function (Request $request, Response $response, array $args) {
-    $id = $args['id'];
-    // Or
-    $id = $request->getAttribute('id');
+$app->get('/books/{id}', function (Request $request, Response $response, string $id) {
+    ...
 });
 ```
 
-Read more about routes [here](http://www.slimframework.com/docs/v3/objects/router.html).
+They are also accessible through the `getAttribute` method.
 
-# Method Injection
+```php
+$app->get('/books/{id}', function (Request $request, Response $response) {
+    $id = $request->getAttribute('id');
+    ....
+});
+```
 
-Method injection allows you to define dependencies on a method level, rather than in the constructor (similar to the Laravel framework). If you want to enable method injection you can enable setting the `methodInjection` setting:
+If you want to disable this behaviour and use the default Slim way of route arguments, you can disable this feature be setting `methodInjection` to `false`:
 
 ```php
 $app->getContainer()->get(\Slim\Settings::class)->set('methodInjection', true);
-
-$app->get('/books/{id}', function (Request $request, string $id) {
-    // ...
-});
 ```
 
-Route attributes are only available as method parameters and will not be accessible through the `getAttribute` method on the request object.
+Read more about routes [here](http://www.slimframework.com/docs/v3/objects/router.html).
 
 ## Error Handlers
 
